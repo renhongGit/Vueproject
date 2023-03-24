@@ -105,7 +105,7 @@
         const myModal = new bootstrap.Modal(document.getElementById('productModal'), {
           keyboard: false
         })
-        myModal.handleUpdate()
+        myModal.show()
       },
     },
     created() {
