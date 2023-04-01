@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="text-right mt-4">
-      <button
-        class="btn btn-primary"
-        @click="openModal(true)"
-      >建立新的產品</button>
+      <button class="btn btn-primary" @click="openModal(true)">
+        建立新的產品
+      </button>
     </div>
     <table class="table mt-4">
       <thead>
@@ -18,34 +17,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(item) in products"
-          :key="item.id"
-        >
+        <tr v-for="item in products" :key="item.id">
           <td>{{ item.category }}</td>
           <td>{{ item.title }}</td>
-          <td class="text-right">
-            {{ item.origin_price}}
-          </td>
-          <td class="text-right">
-            {{ item.price}}
-          </td>
+          <td class="text-right">{{ item.origin_price }}</td>
+          <td class="text-right">{{ item.price }}</td>
           <td>
-            <span
-              v-if="item.is_enabled"
-              class="text-success"
-            >啟用</span>
+            <span v-if="item.is_enabled" class="text-success">啟用</span>
             <span v-else>未啟用</span>
           </td>
           <td>
             <button
               class="btn btn-outline-primary btn-sm"
-              @click="openModal(false,item)"
-            >編輯</button>
+              @click="openModal(false, item)"
+            >
+              編輯
+            </button>
             <button
               class="btn btn-outline-primary btn-sm"
               @click="openDeleteModal(item)"
-            >刪除</button>
+            >
+              刪除
+            </button>
           </td>
         </tr>
       </tbody>
@@ -59,17 +52,10 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-
-      <div
-        class="modal-dialog modal-lg "
-        role="document"
-      >
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
-            <h5
-              class="modal-title"
-              id="exampleModalLabel"
-            >
+            <h5 class="modal-title" id="exampleModalLabel">
               <span>新增產品</span>
             </h5>
             <button
@@ -91,11 +77,11 @@
                   id="image"
                   v-model="tempProduct.imageUrl"
                   placeholder="請輸入圖片連結"
-                >
-
+                />
               </div>
               <div class="form-group">
-                <label for="customFile">或 上傳圖片
+                <label for="customFile"
+                  >或 上傳圖片
                   <i class="fas fa-spinner fa-spin"></i>
                 </label>
                 <input
@@ -103,15 +89,14 @@
                   id="customFile"
                   class="form-control"
                   ref="files"
-                >
+                />
               </div>
               <img
                 img="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=828346ed697837ce808cae68d3ddc3cf&auto=format&fit=crop&w=1350&q=80"
                 class="img-fluid"
                 :src="tempProduct.imageUrl"
                 alt=""
-              >
-
+              />
             </div>
             <div class="col-sm-8">
               <div class="form-group">
@@ -122,8 +107,7 @@
                   id="title"
                   v-model="tempProduct.title"
                   placeholder="請輸入標題"
-                >
-
+                />
               </div>
 
               <div class="form-row">
@@ -135,8 +119,7 @@
                     id="category"
                     v-model="tempProduct.category"
                     placeholder="請輸入分類"
-                  >
-
+                  />
                 </div>
                 <div class="form-group col-md-6">
                   <label for="price">單位</label>
@@ -146,8 +129,7 @@
                     id="unit"
                     v-model="tempProduct.unit"
                     placeholder="請輸入單位"
-                  >
-
+                  />
                 </div>
               </div>
 
@@ -160,8 +142,7 @@
                     id="origin_price"
                     v-model="tempProduct.origin_price"
                     placeholder="請輸入原價"
-                  >
-
+                  />
                 </div>
                 <div class="form-group col-md-6">
                   <label for="price">售價</label>
@@ -171,11 +152,10 @@
                     id="price"
                     v-model="tempProduct.price"
                     placeholder="請輸入售價"
-                  >
-
+                  />
                 </div>
               </div>
-              <hr>
+              <hr />
 
               <div class="form-group">
                 <label for="description">產品描述</label>
@@ -186,7 +166,6 @@
                   v-model="tempProduct.description"
                   placeholder="請輸入產品描述"
                 ></textarea>
-
               </div>
               <div class="form-group">
                 <label for="content">說明內容</label>
@@ -197,7 +176,6 @@
                   v-model="tempProduct.content"
                   placeholder="請輸入產品說明內容"
                 ></textarea>
-
               </div>
               <div class="form-group">
                 <div class="form-check">
@@ -208,51 +186,30 @@
                     :true-value="1"
                     :false-value="0"
                     id="is_enabled"
-                  >
+                  />
 
-                  <label
-                    class="form-check-label"
-                    for="is_enabled"
-                  >
+                  <label class="form-check-label" for="is_enabled">
                     是否啟用
                   </label>
                 </div>
               </div>
             </div>
-            <div class="modal fade" id="delProductModal" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content border-0">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="exampleModalLabel">
-          <span>刪除產品</span>
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        是否刪除 <strong class="text-danger">{{ tempProduct.title }}</strong> 商品(刪除後將無法恢復)。
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-danger"
-          >確認刪除</button>
-      </div>
-    </div>
-  </div>
-</div>
-            <div class="modal-footer"><button
+            <div class="modal-footer">
+              <button
                 type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
-              >取消</button>
+              >
+                取消
+              </button>
               <button
                 type="button"
                 class="btn btn-primary"
                 data-bs-dismiss="modal"
                 @click="updateProduct"
-              >確認</button>
+              >
+                確認
+              </button>
             </div>
           </div>
         </div>
@@ -260,104 +217,115 @@
     </div>
     <!-- Delete Modal -->
     <div class="modal" tabindex="-1" id="deleteModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">刪除產品</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>你確定要刪除該產品嗎,刪除無法復原</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="deleteData()">確定刪除</button>
-        <button type="button" class="btn btn-primary">取消刪除</button>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">刪除產品</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>你確定要刪除該產品嗎,刪除無法復原</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              @click="deleteData()"
+            >
+              確定刪除
+            </button>
+            <button type="button" class="btn btn-primary">取消刪除</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
   </div>
 </template>
 
 <script>
+import Modal from "bootstrap/js/dist/modal";
 
-  import Modal from "bootstrap/js/dist/modal";
-
-  export default {
-    data() {
-      return {
-        products: [],
-        tempProduct: {},
-        isNew: false,
-      };
+export default {
+  data() {
+    return {
+      products: [],
+      tempProduct: {},
+      isNew: false,
+    };
+  },
+  methods: {
+    getProducts() {
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products`;
+      const vm = this;
+      this.axios.get(api).then((response) => {
+        console.log(response.data);
+        vm.products = response.data.products;
+      });
     },
-    methods: {
-      getProducts() {
-        const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products`
-        const vm = this
-        this.axios.get(api).then((response) => {
-          console.log(response.data)
-          vm.products = response.data.products;
-        })
-      },
-      openModal(isNew, item) {
-        const myModal = new Modal(document.getElementById('productModal'), {
-          keyboard: false
-        })
-        if (isNew) {
-          this.tempProduct = {};
-          this.isNew = true;
-        } else {
-          this.tempProduct = Object.assign({}, item);
-          this.isNew = false;
-        }
-        myModal.show()
-      },
-      updateProduct() {
-        let api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
-        let httpMethod = 'post'
-        const vm = this
-        if (!vm.isNew) {
-          api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
-          httpMethod = 'put'
-        }
-        this.axios[httpMethod](api, { data: vm.tempProduct }).then((response) => {
-          console.log(response.data)
-          if (response.data.success) {
-            const myModal = new Modal(document.getElementById('productModal'), {
-              keyboard: false
-            })
-            myModal.hide()
-            vm.getProducts()
-          } else {
-            const myModal = new Modal(document.getElementById('productModal'), {
-              keyboard: false
-            })
-            myModal.hide()
-            vm.getProducts()
-            console.log('失敗')
-          }
-          // vm.products = response.data.produc 
-        })
-      },
-      openDeleteModal(item){
-        const myModal = new Modal(document.getElementById('deleteModal'), {
-          keyboard: false
-        })
-        this.tempProduct =item
-        myModal.show()
-      },
-      deleteData(){
-        const vm = this
-        const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/${vm.tempProduct.id}`
-        console.log(api)
-        this.axios.delete(api).then(() => {
+    openModal(isNew, item) {
+      const myModal = new Modal(document.getElementById("productModal"), {
+        keyboard: false,
+      });
+      if (isNew) {
+        this.tempProduct = {};
+        this.isNew = true;
+      } else {
+        this.tempProduct = Object.assign({}, item);
+        this.isNew = false;
+      }
+      myModal.show();
+    },
+    updateProduct() {
+      let api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
+      let httpMethod = "post";
+      const vm = this;
+      if (!vm.isNew) {
+        api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
+        httpMethod = "put";
+      }
+      this.axios[httpMethod](api, { data: vm.tempProduct }).then((response) => {
+        console.log(response.data);
+        if (response.data.success) {
+          const myModal = new Modal(document.getElementById("productModal"), {
+            keyboard: false,
+          });
+          myModal.hide();
           vm.getProducts();
-        })
-      },
+        } else {
+          const myModal = new Modal(document.getElementById("productModal"), {
+            keyboard: false,
+          });
+          myModal.hide();
+          vm.getProducts();
+          console.log("失敗");
+        }
+        // vm.products = response.data.produc
+      });
     },
-    created() {
-      this.getProducts()
+    openDeleteModal(item) {
+      const myModal = new Modal(document.getElementById("deleteModal"), {
+        keyboard: false,
+      });
+      this.tempProduct = item;
+      myModal.show();
     },
-  }
+    deleteData() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/${vm.tempProduct.id}`;
+      console.log(api);
+      this.axios.delete(api).then(() => {
+        vm.getProducts();
+      });
+    },
+  },
+  created() {
+    this.getProducts();
+  },
+};
 </script>
