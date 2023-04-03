@@ -318,7 +318,7 @@ export default {
     },
     deleteData() {
       const vm = this;
-      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/${vm.tempProduct.id}`;
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
       console.log(api);
       this.axios.delete(api).then(() => {
         vm.getProducts();
@@ -331,13 +331,15 @@ export default {
       const formData = new FormData();
       formData.append("file-to-upload", uploadedFile);
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
-      this.$http.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        }.then((response) => {
+      this.$http
+        .post(url, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
           console.log(response.data);
-        }),
-      });
+        });
     },
   },
   created() {
