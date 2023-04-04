@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active="isLoading" />
     <div class="text-right mt-4">
       <button class="btn btn-primary" @click="openModal(true)">
         建立新的產品
@@ -82,7 +83,10 @@
               <div class="form-group">
                 <label for="customFile"
                   >或 上傳圖片
-                  <i class="fas fa-spinner fa-spin"></i>
+                  <i
+                    class="fas fa-spinner fa-spin"
+                    v-if="status.fileUploading"
+                  ></i>
                 </label>
                 <input
                   type="file"
@@ -258,14 +262,20 @@ export default {
       products: [],
       tempProduct: {},
       isNew: false,
+      isLoading: false,
+      status: {
+        fileUploading: false,
+      },
     };
   },
   methods: {
     getProducts() {
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products`;
       const vm = this;
+      vm.isLoading = true;
       this.axios.get(api).then((response) => {
         console.log(response.data);
+        vm.isLoading = false;
         vm.products = response.data.products;
       });
     },
@@ -331,6 +341,7 @@ export default {
       const formData = new FormData();
       formData.append("file-to-upload", uploadedFile);
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
+      vm.status.fileUploading = true;
       this.$http
         .post(url, formData, {
           headers: {
@@ -339,6 +350,12 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
+          vm.status.fileUploading = false;
+          if (response.data.success) {
+            // vm.tempProduct.imageUrl = response.data.imageUrl;
+            // console.log(vm.tempProduct);
+            vm.$set(vm.tempProduct, "imageUrl", response.data.imageUrl);
+          }
         });
     },
   },
