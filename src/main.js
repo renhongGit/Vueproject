@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
+import "./bus";
 //第三方套件
 import axios from "axios";
 import VueAxios from "vue-axios";

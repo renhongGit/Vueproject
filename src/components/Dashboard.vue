@@ -1,6 +1,7 @@
 <template>
   <div>
     <Navber></Navber>
+    <Alert></Alert>
     <div class="container-fluid">
       <div class="row">
         <Sidebar></Sidebar>
@@ -13,17 +14,22 @@
 </template>
 
 <script>
-  import Sidebar from './Sidebar.vue';
-  import Navber from './Navber.vue';
+import Sidebar from "./Sidebar.vue";
+import Navber from "./Navber.vue";
+import Alert from "./AlertMessage.vue";
 
-  export default {
-    components: {
-      Sidebar,
-      Navber,
-    },
-    created() {
-      const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-      this.$http.defaults.headers.common.Authorization = `${token}`;
-    },
-  }
-</script>  
+export default {
+  components: {
+    Sidebar,
+    Navber,
+    Alert,
+  },
+  created() {
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    this.$http.defaults.headers.common.Authorization = `${token}`;
+  },
+};
+</script>
