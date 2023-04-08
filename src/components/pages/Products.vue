@@ -44,6 +44,11 @@
         </tr>
       </tbody>
     </table>
+    <!-- pagination -->
+    <Pagination
+      :pagination="pagination"
+      @getProducts="getProducts"
+    ></Pagination>
     <!-- Modal -->
     <div
       class="modal fade"
@@ -255,11 +260,12 @@
 
 <script>
 import Modal from "bootstrap/js/dist/modal";
-
+import Pagination from "./Pagination";
 export default {
   data() {
     return {
       products: [],
+      pagination: {},
       tempProduct: {},
       isNew: false,
       isLoading: false,
@@ -268,15 +274,19 @@ export default {
       },
     };
   },
+  components: {
+    Pagination,
+  },
   methods: {
-    getProducts() {
-      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products`;
+    getProducts(page = 1) {
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
       const vm = this;
       vm.isLoading = true;
       this.axios.get(api).then((response) => {
         console.log(response.data);
         vm.isLoading = false;
         vm.products = response.data.products;
+        vm.pagination = response.data.pagination;
       });
     },
     openModal(isNew, item) {
