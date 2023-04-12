@@ -5,6 +5,8 @@ import VueRouter from "vue-router";
 import Login from "@/components/pages/Login";
 import Dashboard from "@/components/Dashboard";
 import Products from "@/components/pages/Products";
+import Orders from "@/components/pages/Orders";
+import Coupons from "@/components/pages/Coupons";
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,6 +34,18 @@ const routes = [
         path: "products",
         name: "Products",
         component: Products,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "orders",
+        name: "Orders",
+        component: Orders,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "coupons",
+        name: "Coupons",
+        component: Coupons,
         meta: { requiresAuth: true },
       },
     ],
