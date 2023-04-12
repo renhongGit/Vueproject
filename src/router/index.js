@@ -7,6 +7,8 @@ import Dashboard from "@/components/Dashboard";
 import Products from "@/components/pages/Products";
 import Orders from "@/components/pages/Orders";
 import Coupons from "@/components/pages/Coupons";
+import CustomerOrders from "@/components/pages/CustomerOrders";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -47,6 +49,18 @@ const routes = [
         name: "Coupons",
         component: Coupons,
         meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: "/",
+    name: "customer_dashboard",
+    component: Dashboard,
+    children: [
+      {
+        path: "customer_orders",
+        name: "CustomerOrders",
+        component: CustomerOrders,
       },
     ],
   },

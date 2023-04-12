@@ -1,10 +1,11 @@
 <template>
   <div>
-    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-      <a
-        class="navbar-brand col-md-3 col-lg-2 me-0 px-3"
-        href="#"
-      >Company name</a>
+    <header
+      class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
+    >
+      <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"
+        >Company name</a
+      >
       <button
         class="navbar-toggler position-absolute d-md-none collapsed"
         type="button"
@@ -21,15 +22,31 @@
         type="text"
         placeholder="Search"
         aria-label="Search"
-      >
+      />
       <div class="navbar-nav">
         <div class="nav-item text-nowrap">
-          <a
-            class="nav-link px-3"
-            href="#"
-          >Sign out</a>
+          <a class="nav-link px-3" href="#" @click.prevent="signout()"
+            >Sign out</a
+          >
         </div>
       </div>
     </header>
   </div>
 </template>
+<script>
+export default {
+  name: "Navbar",
+  methods: {
+    signout() {
+      const vm = this;
+      const url = `${process.env.VUE_APP_API}/logout`;
+      this.$http.post(url).then((response) => {
+        console.log(response.data);
+        if (response.data.success) {
+          vm.$router.push("/signin");
+        }
+      });
+    },
+  },
+};
+</script>
