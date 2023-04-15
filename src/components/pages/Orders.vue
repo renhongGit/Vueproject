@@ -57,7 +57,7 @@ export default {
   methods: {
     getOrders(currentPage = 1) {
       const vm = this;
-      const url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${currentPage}`;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${currentPage}`;
       vm.isLoading = true;
       this.$http.get(url, vm.tempProduct).then((response) => {
         vm.orders = response.data.orders;
@@ -83,7 +83,7 @@ export default {
   },
   created() {
     this.getOrders();
-    console.log(process.env.APIPATH);
+    console.log(process.env.VUE_APP_API);
   },
 };
 </script>
