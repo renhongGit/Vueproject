@@ -189,6 +189,87 @@
           </button>
         </div>
       </div>
+      <form @submit.prevent="createOrder()">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            v-model="form.user.email"
+            aria-describedby="emailHelp"
+            v-validate="'required|email'"
+            :class="{ 'is-invalid': errors.has('email') }"
+          />
+          <span class="text-danger" v-if="errors.has('email')">{{
+            errors.first("email")
+          }}</span>
+          <div id="emailHelp" class="form-text">
+            我們絕不會與其他任何人分享您的電子郵件。
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">收件人姓名</label>
+          <input
+            type="text"
+            name="name"
+            class="form-control"
+            id="username"
+            v-model="form.user.name"
+            v-validate="'required'"
+            :class="{ 'is-invalid': errors.has('name') }"
+          />
+          <span class="text-danger" v-if="errors.has('name')"
+            >姓名必須輸入</span
+          >
+        </div>
+        <div class="mb-3">
+          <label for="usertel" class="form-label">收件人電話</label>
+          <input
+            type="tel"
+            name="tel"
+            class="form-control"
+            id="usertel"
+            v-model="form.user.tel"
+            v-validate="'required|digits:10'"
+            :class="{ 'is-invalid': errors.has('tel') }"
+          />
+          <span class="text-danger" v-if="errors.has('tel')">
+            {{ errors.first("tel").replace(/tel/, "電話") }}
+          </span>
+          <!-- 使用replace 表達式替換文字 -->
+        </div>
+        <div class="mb-3">
+          <label for="useraddress" class="form-label">收件人地址</label>
+          <input
+            type="text"
+            name="address"
+            class="form-control"
+            id="useraddress"
+            v-model="form.user.address"
+            v-validate="'required'"
+            :class="{ 'is-invalid': errors.has('address') }"
+          />
+          <span class="text-danger" v-if="errors.has('address')">
+            {{ errors.first("address").replace(/address/, "地址") }}
+          </span>
+        </div>
+        <div class="mb-3">
+          <label for="useraddress" class="form-label">留言</label>
+          <textarea
+            name=""
+            id=""
+            class="form-control"
+            cols="30"
+            rows="10"
+            v-model="form.message"
+          ></textarea>
+        </div>
+        <div class="text-end mb-5">
+          <button type="submit" class="btn btn-danger">送出訂單</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -203,6 +284,15 @@ export default {
       carts: [],
       final_total: NaN,
       total: NaN,
+      form: {
+        user: {
+          name: "",
+          email: "",
+          tel: "",
+          address: "",
+        },
+        message: "",
+      },
       status: {
         loadingItem: "",
       },
@@ -282,6 +372,25 @@ export default {
         console.log(response);
         vm.getCart();
         vm.isLoading = false;
+      });
+    },
+    createOrder() {
+      const vm = this;
+      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
+      const order = vm.form;
+      // vm.isLoading = true;
+      this.$validator.validate().then((result) => {
+        if (result) {
+          this.$http.post(url, { data: order }).then((response) => {
+            console.log("訂單成立", response);
+            if (response.data.success) {
+              vm.$router.push(`customer_checkout/${response.data.orderId}`);
+            }
+            vm.isLoading = false;
+          });
+        } else {
+          console.log("欄位不完整");
+        }
       });
     },
   },

@@ -3,18 +3,27 @@ import App from "./App.vue";
 import router from "./router";
 import "./bus";
 import currencyFilter from "./filter/currency";
-//第三方套件
+
 import axios from "axios";
 import VueAxios from "vue-axios";
+
 import "bootstrap";
+
+import VeeValidate, { Validator } from "vee-validate"; //匯入檔案
+import TW from "vee-validate/dist/locale/zh_TW"; //匯入語言包
 
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
-Vue.component("Loading", Loading);
 axios.defaults.withCredentials = true;
+
+Vue.use(VeeValidate); //啟用API
+Validator.localize("zh-TW", TW); //啟用語言包
+
+Vue.component("Loading", Loading);
+
 Vue.filter("currency", currencyFilter);
 
 new Vue({
