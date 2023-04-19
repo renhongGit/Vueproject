@@ -18,7 +18,9 @@
           :class="{ 'text-secondary': !item.is_paid }"
         >
           <td>{{ item.create_at | date }}</td>
-          <td><span v-text="item.user.email" v-if="item.user"></span></td>
+          <td>
+            <span v-text="item.user.email" v-if="item.user"></span>
+          </td>
           <td>
             <ul class="list-unstyled">
               <li v-for="(product, i) in item.products" :key="i">
@@ -35,7 +37,6 @@
         </tr>
       </tbody>
     </table>
-
     <Pagination :pages="pagination" @emitPages="getOrders"></Pagination>
   </div>
 </template>
@@ -63,7 +64,6 @@ export default {
         vm.orders = response.data.orders;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
-        console.log(response);
       });
     },
   },
@@ -83,7 +83,6 @@ export default {
   },
   created() {
     this.getOrders();
-    console.log(process.env.VUE_APP_API);
   },
 };
 </script>

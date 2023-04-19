@@ -250,7 +250,13 @@
             >
               確定刪除
             </button>
-            <button type="button" class="btn btn-primary">取消刪除</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              取消刪除
+            </button>
           </div>
         </div>
       </div>

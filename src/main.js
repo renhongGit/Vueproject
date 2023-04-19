@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import "./bus";
 import currencyFilter from "./filter/currency";
+import dateFilter from "./filter/date";
 
 import axios from "axios";
 import VueAxios from "vue-axios";
@@ -25,6 +26,7 @@ Validator.localize("zh-TW", TW); //啟用語言包
 Vue.component("Loading", Loading);
 
 Vue.filter("currency", currencyFilter);
+Vue.filter("date", dateFilter);
 
 new Vue({
   router,

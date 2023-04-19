@@ -1,18 +1,19 @@
 <template>
   <div>
-    <div class="text-right">
+    <loading :active="isLoading" />
+    <div class="text-right mt-4">
       <button class="btn btn-primary" @click="openCouponModal(true)">
-        建立新的優惠券
+        建立新的優惠卷
       </button>
     </div>
     <table class="table mt-4">
       <thead>
         <tr>
-          <th>名稱</th>
-          <th>折扣百分比</th>
-          <th>到期日</th>
-          <th>是否啟用</th>
-          <th>編輯</th>
+          <th width="120">名稱</th>
+          <th width="120">折扣百分比</th>
+          <th width="120">到期日</th>
+          <th width="100">是否啟用</th>
+          <th width="80">編輯</th>
         </tr>
       </thead>
       <tbody>
@@ -21,8 +22,10 @@
           <td>{{ item.percent }}%</td>
           <td>{{ item.due_date | date }}</td>
           <td>
-            <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
-            <span v-else class="text-muted">未起用</span>
+            <span v-if="item.is_enabled === 1" class="text-success">
+              啟用
+            </span>
+            <span v-else class="text-muted">未啟用</span>
           </td>
           <td>
             <button
@@ -31,25 +34,25 @@
             >
               編輯
             </button>
+            <button
+              class="btn btn-outline-primary btn-sm"
+              @click="deleteData(item.id)"
+            >
+              刪除
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <div
-      class="modal fade"
-      id="couponModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
+    <!-- model -->
+    <div class="modal" tabindex="-1" id="couponModal">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title">優惠卷</h5>
             <button
               type="button"
-              class="close"
+              class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
             >
@@ -63,8 +66,8 @@
                 type="text"
                 class="form-control"
                 id="title"
-                v-model="tempCoupon.title"
                 placeholder="請輸入標題"
+                v-model="tempCoupon.title"
               />
             </div>
             <div class="form-group">
@@ -120,7 +123,12 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="updateCoupon">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="updateCoupon()"
+            >
               更新優惠券
             </button>
           </div>
@@ -148,6 +156,7 @@ export default {
       },
       due_date: new Date(),
       isNew: false,
+      isLoading: false,
     };
   },
   watch: {
@@ -158,6 +167,15 @@ export default {
     },
   },
   methods: {
+    getCoupons() {
+      const vm = this;
+      vm.isLoading = true;
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons`;
+      this.$http.get(api, vm.tempProduct).then((response) => {
+        vm.coupons = response.data.coupons;
+        vm.isLoading = false;
+      });
+    },
     openCouponModal(isNew, item) {
       const vm = this;
       const myModal = new Modal(document.getElementById("couponModal"), {
@@ -175,19 +193,11 @@ export default {
         vm.due_date = dateAndTime[0];
       }
     },
-    getCoupons() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons`;
-      this.$http.get(url, vm.tempProduct).then((response) => {
-        vm.coupons = response.data.coupons;
-        console.log(response);
-      });
-    },
     updateCoupon() {
       const vm = this;
       if (vm.isNew) {
-        const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
-        this.$http.post(url, { data: vm.tempCoupon }).then((response) => {
+        const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
+        this.$http.post(api, { data: vm.tempCoupon }).then((response) => {
           console.log(response, vm.tempCoupon);
           const myModal = new Modal(document.getElementById("couponModal"), {
             keyboard: false,
@@ -196,9 +206,9 @@ export default {
           this.getCoupons();
         });
       } else {
-        const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`;
+        const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`;
         vm.due_date = new Date(vm.tempCoupon.due_date * 1000);
-        this.$http.put(url, { data: vm.tempCoupon }).then((response) => {
+        this.$http.put(api, { data: vm.tempCoupon }).then((response) => {
           console.log(response);
           const myModal = new Modal(document.getElementById("couponModal"), {
             keyboard: false,
@@ -207,6 +217,15 @@ export default {
           this.getCoupons();
         });
       }
+    },
+    deleteData(id) {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${id}`;
+      vm.isLoading = true;
+      this.axios.delete(api).then(() => {
+        vm.getCoupons();
+        vm.isLoading = false;
+      });
     },
   },
   created() {
